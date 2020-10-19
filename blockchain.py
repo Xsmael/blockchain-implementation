@@ -25,9 +25,9 @@ Consider:
 
 v2
 * Possibilité d'afficher la blockhain entièrement 👍
-* Le genesis block ne doit contenir aucune transaction
-* Fonction modifer: pour manipuler la chaine 
-* Fonction pour verifier la chaine 
+* Le genesis block ne doit contenir aucune transaction 👍
+* Fonction editer: permettant de manipuler la chaine 👍
+# * Fonction verifier: pour verifier la validité de la chaine 
 * S'assurer que tout la chaine est valide avant d'ajouter un block 
 """
 
@@ -35,7 +35,7 @@ BLOCK_SIZE=3
 BLOCKCHAIN=[]
 MENU_STRING="1- Continuer\n2- Afficher la blockhain\n0- Quittter"
 pendingBlock={}
-decision=1
+makeDecision=1
 currentIndex=0
 
 def init():
@@ -64,7 +64,7 @@ def newTransaction():
     Adds a new transaction to the pending block
     """
     global pendingBlock
-    global decision
+    global makeDecision
     transaction= {
         'sender': input('Expéditeur: '),
         'receiver': input('Destinataire: '),
@@ -74,7 +74,7 @@ def newTransaction():
     print("Transaction ajouté!")
     if( len(pendingBlock['transactions']) == BLOCK_SIZE  ): 
         print("Block complet\n")
-        decision=  int(input(MENU_STRING))
+        makeDecision=  int(input(MENU_STRING))
         mining()
     
     return 
@@ -139,18 +139,28 @@ def displayBlockchain():
     return
 
 def editBlock():
-    i= input("Entrez l'index du bloc à modifer: ")
+    idx= int(input("Entrez l'index du bloc à modifer: "))
+    block= BLOCKCHAIN[idx]
+    printty(block)
+    idx= int(input("Entrez l'index de la transaction à modifer: "))
+    printty(block['transactions'][idx])
+    block['transactions'][idx]= {
+        'sender': input('Expéditeur: '),
+        'receiver': input('Destinataire: '),
+        'amount': int(input('Montant: '))
+    }
+
 
 def printty(obj):
    print (json.dumps(obj, indent=4))
 
 
 while 1:
-    if(decision==1):
+    if(makeDecision==1):
         newTransaction()
-    elif (decision==2):
+    elif (makeDecision==2):
         displayBlockchain()
-        decision=  int(input(MENU_STRING))
+        makeDecision=  int(input(MENU_STRING))
     else:
         print("Why so soon ??\nbye!")
         break
