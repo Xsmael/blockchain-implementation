@@ -32,3 +32,8 @@ import json
 
 print (json.dumps({'a':2, 'b':{'x':3, 'y':{'t1': 4, 't2':5}}}, indent=4))
 
+
+x = [0] * 10
+print x 
+y = [i+1 for i in xrange(10)]
+print y

@@ -2,34 +2,62 @@ import hashlib
 from time import time
 import json
 
-"""
-Block structure:
--index
--hash
--transactions[]
--nonce
--previousHash
--timestamp
 
-Consider:
--bloc_0  # Root Block
--pending_transactions[]
--blockchain[]
+class Block:
+    content= {}
+    isFull= False
+    def __init__(self, index,previousHash, blockSize=3):
+        self.size=blockSize
+        Block.content= {
+            'index':index,
+            'hash': '',
+            'transactions':[],
+            'nonce':0,
+            'previousHash': previousHash,
+            'timestamp': time()
+        }
+    
+    def addTransaction(self):
+        """
+        adds a transaction to the block
+        """
+        transaction= {
+            'sender': input('Expéditeur: '),
+            'receiver': input('Destinataire: '),
+            'amount': int(input('Montant: '))
+        }
+        Block.content.transactions.append(transaction)
 
-* Nouvelle transaction 👍
-* Validation de la transaction 👍
-* Ajout de la transaction dans un block pendant 👍
-* repeter jusqu'a ce que le block atteind la limite 👍
-* démarragag du processus de minage pour ajouter le block dans la blockchain 👍
-* création d'un nouveau block 👍
+    def addTransaction(self,sender, receiver, amount):
+        """
+        Overloaded Transaction method
+        """
+        transaction= {
+            'sender': sender,
+            'receiver': receiver,
+            'amount': amount
+        }
+        Block.content['transactions'].append(transaction)
+    
+    def removeTransaction(self, idx):
+        """
+        Removes the transaction at idx returns the removed transaction
+        """
+        t= Block.content['transactions']
+        del Block.content['transactions']
+        return t
+    
+    def editTransaction(self, idx, sender, receiver, amount):
+        """
+        edits a transaction
+        """
+        Block.content['transactions'][idx]['sender']= sender
+        Block.content['transactions'][idx]['receiver']= receiver
+        Block.content['transactions'][idx]['amount']= amount
 
-v2
-* Possibilité d'afficher la blockhain entièrement 👍
-* Le genesis block ne doit contenir aucune transaction 👍
-* Fonction editer: permettant de manipuler la chaine 👍
-* Fonction verifier: pour verifier la validité de la chaine 
-* S'assurer que tout la chaine est valide avant d'ajouter un block 
-"""
+    def isFull(self):
+        return len( Block.content['transactions']) ==  self.size 
+
 
 BLOCK_SIZE=3
 BLOCKCHAIN=[]
